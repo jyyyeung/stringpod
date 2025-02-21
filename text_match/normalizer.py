@@ -57,23 +57,52 @@ class NormalizerOptions:
         )
 
     @classmethod
+    def disable_all(cls) -> 'NormalizerOptions':
+        """Disable all options."""
+        return cls(
+            strip_whitespace=False,
+            remove_whitespace=False,
+            ignore_chinese_variant=False,
+            ignore_case=False,
+            nfkc=False,
+        )
+
+    @classmethod
     def from_string(cls, options_string: str) -> 'NormalizerOptions':
         """Create a NormalizerOptions from a string."""
         if options_string is None or options_string.strip() == '':
             return cls()
+
+        lower_stripped = options_string.lower().strip()
+
+        # Enable all options
+        if lower_stripped in ['all', 'enable_all', 'enable', '*', 'true', '1']:
+            return cls.enable_all()
+        # Disable all options
+        if lower_stripped in ['none', 'disable_all', 'disable', '!', 'false', '0']:
+            return cls.disable_all()
+
         options = cls()
-        for option in options_string.split(','):
-            if option == 'strip_whitespace':
-                options.strip_whitespace = True
-            elif option == 'remove_whitespace':
-                options.remove_whitespace = True
-            elif option == 'ignore_chinese_variant':
-                options.ignore_chinese_variant = True
-            elif option == 'ignore_case':
-                options.ignore_case = True
-            elif option == 'nfkc':
-                options.nfkc = True
+        for opt in options_string.split(','):
+            if 'strip_whitespace' in opt:
+                options.strip_whitespace = cls._enabled(opt)
+            if 'remove_whitespace' in opt:
+                options.remove_whitespace = cls._enabled(opt)
+            if 'ignore_chinese_variant' in opt:
+                options.ignore_chinese_variant = cls._enabled(opt)
+            if 'ignore_case' in opt:
+                options.ignore_case = cls._enabled(opt)
+            if 'nfkc' in opt:
+                options.nfkc = cls._enabled(opt)
         return options
+
+    @classmethod
+    def _enabled(cls, option_string: str) -> bool:
+        """Check if an option is enabled.
+
+        If the option string starts with '!', it is disabled.
+        """
+        return not option_string.startswith('!')
 
 
 class Normalizer:
@@ -90,10 +119,14 @@ class Normalizer:
 
     options: NormalizerOptions
 
-    def __init__(self, options: NormalizerOptions | None = None):
-        if options is None:
-            options = NormalizerOptions()
-        self.options = options
+    def __init__(self, options: NormalizerOptions | str | None = None):
+        _options = NormalizerOptions()
+        if isinstance(options, str):
+            _options = NormalizerOptions.from_string(options)
+        elif isinstance(options, NormalizerOptions):
+            _options = options
+
+        self.options = _options
 
     def normalize(self, text: str, _options: NormalizerOptions | None = None) -> str:
         """Normalize the text based on provided options."""

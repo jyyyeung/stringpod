@@ -19,10 +19,20 @@ Matching texts across languages
 
 ## Usage
 
+### Contains
+
 ```bash
 text-match contains "Hello, world!" "world"
 text-match contains "  Hello, world!  " "lo, wor" --options "strip_whitespace,ignore_case"
 text-match contains "歌曲（純音樂）" "(纯音乐)" --options "ignore_chinese_variant"
+```
+
+### Normalize
+
+```bash
+text-match normalize "Hello, World!!!"
+text-match normalize "    Hello,   World!!!" --options "all"
+text-match normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
 ```
 
 ## Normalizer Options
