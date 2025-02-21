@@ -50,8 +50,8 @@ jobs:
           HASH=$(git rev-parse --short HEAD)
           # Get current timestamp
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
-          # Update version with dev suffix
-          poetry version $(poetry version --short)-dev.$TIMESTAMP.$HASH
+          # Update version with dev suffix (PEP 440 compliant)
+          poetry version $(poetry version --short).dev$TIMESTAMP+$HASH
           echo "VERSION=$(poetry version --short)" >> $GITHUB_ENV
 
       - name: Build wheels and source tarball
