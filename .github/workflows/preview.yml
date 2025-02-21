@@ -65,3 +65,4 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true # Skip if version already exists
+          verbose: true
