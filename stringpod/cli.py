@@ -3,6 +3,7 @@
 import click
 
 from stringpod.normalizer import Normalizer, NormalizerOptions
+from stringpod.number import to_number, to_number_with_language
 from stringpod.stringpod import contains_substring
 
 
@@ -51,6 +52,29 @@ def normalize(text: str, options: str):
 
     normalizer = Normalizer(options_obj)
     click.echo(f"Result: {normalizer.normalize(text)}")
+
+
+@main.command()
+@click.argument("text", type=str)
+@click.option("--language", type=str, help="The language code of the text")
+def number(text: str, language: str):
+    """Parse a number from a string.
+
+    >>> stringpod number "one two three"
+    123
+    >>> stringpod number "一二三"
+    123
+    >>> stringpod number "uno dos tres" --language "es"
+    1 2 3
+    """
+    click.echo(f"Text: {text}")
+    click.echo(f"Language: {language}")
+    result = None
+    if language is None or language == "":
+        result = to_number(text)
+    else:
+        result = to_number_with_language(text, language)
+    click.echo(f"Result: {result}")
 
 
 if __name__ == "__main__":
