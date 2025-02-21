@@ -24,8 +24,8 @@ theme:
     - navigation.tabs.sticky
 markdown_extensions:
   - pymdownx.emoji:
-      emoji_index: !!material.extensions.emoji.twemoji
-      emoji_generator: !!material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.mark
@@ -43,15 +43,21 @@ markdown_extensions:
   - toc:
       baselevel: 2
       permalink: true
-      slugify: !!python/name:pymdownx.slugs.uslugify
+      slugify: !!python/name:markdown.extensions.toc.slugify_unicode
   - meta
 plugins:
   - include-markdown
   - search:
       lang: en
   - mkdocstrings:
-      watch:
-        - text-match
+      default_handler: python
+      handlers:
+        python:
+          paths: [text_match]
+          options:
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
 extra:
   social:
     - icon: fontawesome/brands/twitter
