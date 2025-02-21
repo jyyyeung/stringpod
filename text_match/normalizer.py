@@ -1,18 +1,15 @@
-"""Factory for normalizing text.
-"""
+"""Factory for normalizing text."""
 
 import re
-from dataclasses import dataclass
 import unicodedata
+from dataclasses import dataclass
 
 import opencc
 
 
-# Type dict
 @dataclass
 class NormalizerOptions:
-    """
-    Options for the normalizer.
+    """Options for the normalizer.
 
     Only `nfkc` is enabled by default.
 
@@ -23,30 +20,31 @@ class NormalizerOptions:
     NormalizerOptions(remove_whitespace=True, strip_whitespace=True, ignore_chinese_variant=True, ignore_case=True)
     """
 
-    """Whether to remove whitespace from the text."""
+    # Whether to remove whitespace from the text.
     remove_whitespace: bool = False
 
-    """Whether to trim whitespace at the beginning and end of the text."""
+    # Whether to trim whitespace at the beginning and end of the text.
     strip_whitespace: bool = False
 
-    """Whether to ignore the variant of Chinese characters."""
+    # Whether to ignore the variant of Chinese characters.
     ignore_chinese_variant: bool = False
 
-    """Whether to ignore the case of the text."""
+    # Whether to ignore the case of the text.
     ignore_case: bool = False
 
-    """Whether to normalize the text to NFKC."""
+    # Whether to normalize the text to NFKC.
     nfkc: bool = True
 
     def __init__(self, **kwargs):
-        self.strip_whitespace = kwargs.get('strip_whitespace', False)
-        self.remove_whitespace = kwargs.get('remove_whitespace', False)
-        self.ignore_chinese_variant = kwargs.get('ignore_chinese_variant', False)
-        self.ignore_case = kwargs.get('ignore_case', False)
-        self.nfkc = kwargs.get('nfkc', True)
+        """Initialize the NormalizerOptions."""
+        self.strip_whitespace = kwargs.get("strip_whitespace", False)
+        self.remove_whitespace = kwargs.get("remove_whitespace", False)
+        self.ignore_chinese_variant = kwargs.get("ignore_chinese_variant", False)
+        self.ignore_case = kwargs.get("ignore_case", False)
+        self.nfkc = kwargs.get("nfkc", True)
 
     @classmethod
-    def enable_all(cls) -> 'NormalizerOptions':
+    def enable_all(cls) -> "NormalizerOptions":
         """Enable all options."""
         return cls(
             strip_whitespace=True,
@@ -57,7 +55,7 @@ class NormalizerOptions:
         )
 
     @classmethod
-    def disable_all(cls) -> 'NormalizerOptions':
+    def disable_all(cls) -> "NormalizerOptions":
         """Disable all options."""
         return cls(
             strip_whitespace=False,
@@ -68,31 +66,31 @@ class NormalizerOptions:
         )
 
     @classmethod
-    def from_string(cls, options_string: str) -> 'NormalizerOptions':
+    def from_string(cls, options_string: str) -> "NormalizerOptions":
         """Create a NormalizerOptions from a string."""
-        if options_string is None or options_string.strip() == '':
+        if options_string is None or options_string.strip() == "":
             return cls()
 
         lower_stripped = options_string.lower().strip()
 
         # Enable all options
-        if lower_stripped in ['all', 'enable_all', 'enable', '*', 'true', '1']:
+        if lower_stripped in ["all", "enable_all", "enable", "*", "true", "1"]:
             return cls.enable_all()
         # Disable all options
-        if lower_stripped in ['none', 'disable_all', 'disable', '!', 'false', '0']:
+        if lower_stripped in ["none", "disable_all", "disable", "!", "false", "0"]:
             return cls.disable_all()
 
         options = cls()
-        for opt in options_string.split(','):
-            if 'strip_whitespace' in opt:
+        for opt in options_string.split(","):
+            if "strip_whitespace" in opt:
                 options.strip_whitespace = cls._enabled(opt)
-            if 'remove_whitespace' in opt:
+            if "remove_whitespace" in opt:
                 options.remove_whitespace = cls._enabled(opt)
-            if 'ignore_chinese_variant' in opt:
+            if "ignore_chinese_variant" in opt:
                 options.ignore_chinese_variant = cls._enabled(opt)
-            if 'ignore_case' in opt:
+            if "ignore_case" in opt:
                 options.ignore_case = cls._enabled(opt)
-            if 'nfkc' in opt:
+            if "nfkc" in opt:
                 options.nfkc = cls._enabled(opt)
         return options
 
@@ -102,12 +100,11 @@ class NormalizerOptions:
 
         If the option string starts with '!', it is disabled.
         """
-        return not option_string.startswith('!')
+        return not option_string.startswith("!")
 
 
 class Normalizer:
-    """
-    Normalizer for text.
+    """Normalizer for text.
 
     >>> normalizer = Normalizer()
     >>> normalizer.normalize('Hello, world!')
@@ -120,6 +117,10 @@ class Normalizer:
     options: NormalizerOptions
 
     def __init__(self, options: NormalizerOptions | str | None = None):
+        """Initialize the Normalizer.
+
+        >>> normalizer = Normalizer()
+        """
         _options = NormalizerOptions()
         if isinstance(options, str):
             _options = NormalizerOptions.from_string(options)
@@ -147,32 +148,28 @@ class Normalizer:
         return text
 
     def _strip_whitespace(self, text: str) -> str:
-        """
-        Strip whitespace from the text.
-        """
+        """Strip whitespace from the text."""
         return text.strip()
 
     def _remove_whitespace(self, text: str) -> str:
-        """
-        Remove whitespace from the text.
-        """
-        return re.sub(r'\s+', '', text)
+        """Remove whitespace from the text."""
+        return re.sub(r"\s+", "", text)
 
     def _convert_to_simplified_chinese(self, text: str) -> str:
-        """
-        Convert the text to Simplified Chinese.
-        """
-        opencc_converter = opencc.OpenCC('t2s')
+        """Convert the text to Simplified Chinese."""
+        opencc_converter = opencc.OpenCC("t2s")
         return opencc_converter.convert(text)
 
     def _normalize_to_nfkc(self, text: str) -> str:
-        """
-        Normalize the text to NFKC.
+        """Normalize the text to NFKC.
 
-        The “NFKC” stands for “Normalization Form KC [Compatibility Decomposition, followed by Canonical Composition]”, and replaces full-width characters by half-width ones, which are Unicode equivalent.
+        The “NFKC” stands for “Normalization Form KC [Compatibility Decomposition, followed by Canonical Composition]”.
 
-        Note that it also normalizes all sorts of other things at the same time, like separate accent marks and Roman numeral symbols.
+        It replaces full-width characters by half-width ones, which are Unicode equivalent.
+
+        Note that it also normalizes all sorts of other things at the same time,
+        like separate accent marks and Roman numeral symbols.
 
         Reference: https://stackoverflow.com/a/2422245
         """
-        return unicodedata.normalize('NFKC', text)
+        return unicodedata.normalize("NFKC", text)

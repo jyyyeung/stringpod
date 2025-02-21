@@ -17,12 +17,11 @@ def main(ctx):
 
 
 @main.command()
-@click.argument('text', type=str)
-@click.argument('substring', type=str)
-@click.option('--options', type=str, help='The options to use for the normalizer')
+@click.argument("text", type=str)
+@click.argument("substring", type=str)
+@click.option("--options", type=str, help="The options to use for the normalizer")
 def contains(text: str, substring: str, options: str):
-    """
-    Check if the text contains the substring.
+    """Check if the text contains the substring.
 
     >>> text-match contains "Hello, world!" "world"
     True
@@ -35,11 +34,10 @@ def contains(text: str, substring: str, options: str):
 
 
 @main.command()
-@click.argument('text', type=str)
-@click.option('--options', type=str, help='The options to use for the normalizer')
+@click.argument("text", type=str)
+@click.option("--options", type=str, help="The options to use for the normalizer")
 def normalize(text: str, options: str):
-    """
-    Normalize the text.
+    """Normalize the text.
 
     >>> text-match normalize "Hello, world!"
     "Hello, world!"
