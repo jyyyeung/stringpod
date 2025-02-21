@@ -20,62 +20,41 @@ packages = [{ include = "stringpod" }, { include = "tests", format = "sdist" }]
 [tool.poetry.dependencies]
 python = ">=3.12.3,<4.0"
 click = "8.0.1"
-
-black = { version = "^25.1.0", optional = true }
-isort = { version = "^6.0.0", optional = true }
-flake8 = { extras = ["docstrings"], version = "^7.1.2", optional = true }
-flake8-docstrings = { version = "^1.6.0", optional = true }
-mypy = { version = "^1.15.0", optional = true }
-pytest = { version = "^8.3.4", optional = true }
-pytest-cov = { version = "^6.0.0", optional = true }
-tox = { version = "^4.24.1", optional = true }
-virtualenv = { version = "^20.2.2", optional = true }
-pip = { version = "^23.0", optional = true }
-mkdocs = { version = "^1.6.1", optional = true }
-mkdocs-include-markdown-plugin = { version = "^1.0.0", optional = true }
-mkdocs-material = { version = "^9.6.5", optional = true }
-mkdocstrings = { version = "^0.28.1", optional = true }
-twine = { version = "^6.1.0", optional = true }
-mkdocs-autorefs = { version = "^1.3.1", optional = true }
-pre-commit = { version = "^4.1.0", optional = true }
-toml = { version = "^0.10.2", optional = true }
-bump2version = { version = "^1.0.1", optional = true }
 opencc = "^1.1.9"
 hanzidentifier = "^1.3.0"
-mkdocstrings-python = { version = "^1.16.1", optional = true }
-
-[tool.poetry.extras]
-test = [
-    "pytest",
-    "black",
-    "isort",
-    "mypy",
-    "flake8",
-    "flake8-docstrings",
-    "pytest-cov",
-]
-
-dev = [
-    "tox",
-    "pre-commit",
-    "virtualenv",
-    "pip",
-    "twine",
-    "toml",
-    "bump2version",
-]
-
-doc = [
-    "mkdocs",
-    "mkdocs-include-markdown-plugin",
-    "mkdocs-material",
-    "mkdocstrings",
-    "mkdocs-autorefs",
-    "mkdocstrings-python",
-]
 
 [tool.poetry.scripts]
 stringpod = 'stringpod.cli:main'
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+black = "^25.1.0"
+isort = "^6.0.0"
+mypy = "^1.15.0"
+flake8 = "^7.1.2"
+flake8-docstrings = "^1.6.0"
+
+[tool.poetry.group.dev.dependencies]
+python-semantic-release = "^9.20.0"
+tox = "^4.24.1"
+pre-commit = "^4.1.0"
+virtualenv = "^20.29.2"
+pip = "^25.0.1"
+twine = "^6.1.0"
+toml = "^0.10.2"
+bump2version = "^1.0.1"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.1"
+mkdocs-include-markdown-plugin = "^1.0.0"
+mkdocs-material = "^9.6.5"
+mkdocstrings = "^0.28.1"
+mkdocstrings-python = "^1.16.1"
+mkdocs-autorefs = "^1.3.1"
 
 [tool.black]
 line-length = 120
@@ -111,3 +90,59 @@ skip_gitignore = true
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variable = ["stringpod/__init__.py:__version__"]
+version_toml = ["pyproject.toml:tool.poetry.version"]
+version_pattern = [
+    "README.md:rev: v{version}",
+    "docs/CONTRIBUTING.md:stringpod, version {version}",
+]
+major_on_zero = true # TODO: change to false when ready for release
+branch = "main"
+upload_to_PyPI = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+logging_use_named_masks = true
+commit_parser = "conventional"
+commit_parser_options = { parse_squash_commits = true, ignore_merge_commits = true }
+
+[tool.semantic_release.changelog]
+default_templates.changelog = "CHANGELOG.md"
+mask_initial_release = true
+output_format = "md"
+mode = "update"
+exclude_commit_patterns = [
+    '''chore(?:\([^)]*?\))?: .+''',
+    '''ci(?:\([^)]*?\))?: .+''',
+    '''cicd(?:\([^)]*?\))?: .+''',
+    '''refactor(?:\([^)]*?\))?: .+''',
+    '''style(?:\([^)]*?\))?: .+''',
+    '''test(?:\([^)]*?\))?: .+''',
+    '''build\((?!deps\): .+)''',
+    '''Merged? .*''',
+    '''Initial Commit.*''',
+    # Old semantic-release version commits
+    '''^\d+\.\d+\.\d+''',
+]
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+prerelease = false
+prerelease_token = "rc"
+
+
+[tool.semantic_release.branches.alpha]
+match = "^(feat|fix|perf)/.+"
+prerelease = true
+prerelease_token = "alpha"
+
+
+[tool.semantic_release.branches.dev]
+match = ".+"
+prerelease = true
+prerelease_token = "dev"
+
+[tool.semantic_release.remote]
+type = "github"
+token = { env = "GH_TOKEN" }

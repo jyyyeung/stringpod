@@ -41,13 +41,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - name: Get Changelog Entry
-        id: changelog_reader
-        uses: mindsers/changelog-reader-action@v2
-        with:
-          validation_depth: 10
-          version: ${{ steps.tag_name.outputs.current_version }}
-          path: ./CHANGELOG.md
+      # - name: Get Changelog Entry
+      #   id: changelog_reader
+      #   uses: mindsers/changelog-reader-action@v2
+      #   with:
+      #     validation_depth: 10
+      #     version: ${{ steps.tag_name.outputs.current_version }}
+      #     path: ./CHANGELOG.md
 
       - uses: actions/setup-python@v5
         with:
@@ -55,12 +55,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+          python -m pip install poetry --upgrade pip
+          poetry config virtualenvs.create false
+          poetry install
 
       - name: build documentation
         run: |
-          poetry install -E doc
+          poetry install --with docs
           poetry run mkdocs build
 
       - name: publish documentation
@@ -69,24 +70,31 @@ jobs:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
 
-      - name: Build wheels and source tarball
-        run: >-
-          poetry build
+      # - name: Build wheels and source tarball
+      #   run: >-
+      #     poetry build
 
-      - name: show temporary files
-        run: >-
-          ls -l
+      # - name: show temporary files
+      #   run: >-
+      #     ls -l
 
-      - name: create github release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          body: ${{ steps.changelog_reader.outputs.changes }}
-          files: dist/*.whl
-          draft: false
-          prerelease: false
+      # - name: create github release
+      #   id: create_release
+      #   uses: softprops/action-gh-release@v2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     body: ${{ steps.changelog_reader.outputs.changes }}
+      #     files: dist/*.whl
+      #     draft: false
+      #     prerelease: false
 
-      - name: publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      # - name: publish to PyPI
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Semantic Release
+        run: |
+          pip install python-semantic-release
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          semantic-release publish
