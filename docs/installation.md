@@ -6,7 +6,7 @@ To install Text Match, run this command in your
 terminal:
 
 ``` console
-$ pip install text-match
+pip install text-match
 ```
 
 This is the preferred method to install Text Match, as it will always install the most recent stable release.
@@ -22,19 +22,19 @@ the [Github repo][].
 You can either clone the public repository:
 
 ``` console
-$ git clone git://github.com/jyyyeung/text-match
+git clone git://github.com/jyyyeung/text-match
 ```
 
 Or download the [tarball][]:
 
 ``` console
-$ curl -OJL https://github.com/jyyyeung/text-match/tarball/master
+curl -OJL https://github.com/jyyyeung/text-match/tarball/master
 ```
 
 Once you have a copy of the source, you can install it with:
 
 ``` console
-$ pip install .
+pip install .
 ```
 
   [pip]: https://pip.pypa.io
