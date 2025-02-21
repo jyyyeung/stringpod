@@ -1,6 +1,6 @@
 """Test the normalizer module."""
 
-from text_match.normalizer import Normalizer, NormalizerOptions
+from stringpod.normalizer import Normalizer, NormalizerOptions
 
 
 def test_normalize_default():

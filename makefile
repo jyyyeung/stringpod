@@ -1,4 +1,4 @@
-sources = text_match
+sources = stringpod
 
 .PHONY: test format lint unittest coverage pre-commit clean
 test: format lint unittest

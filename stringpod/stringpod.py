@@ -4,7 +4,7 @@ import re
 
 import hanzidentifier
 
-from text_match.normalizer import Normalizer, NormalizerOptions
+from stringpod.normalizer import Normalizer, NormalizerOptions
 
 
 def contains_chinese(text: str) -> bool:

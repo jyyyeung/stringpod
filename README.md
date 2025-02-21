@@ -1,15 +1,15 @@
-# Text Match
+# String Pod
 
-[![pypi](https://img.shields.io/pypi/v/text-match.svg)](https://pypi.org/project/text-match/)
-[![python](https://img.shields.io/pypi/pyversions/text-match.svg)](https://pypi.org/project/text-match/)
-[![Build Status](https://github.com/jyyyeung/text-match/actions/workflows/dev.yml/badge.svg)](https://github.com/jyyyeung/text-match/actions/workflows/dev.yml)
-[![codecov](https://codecov.io/gh/jyyyeung/text-match/branch/main/graphs/badge.svg)](https://codecov.io/github/jyyyeung/text-match)
+[![pypi](https://img.shields.io/pypi/v/stringpod.svg)](https://pypi.org/project/stringpod/)
+[![python](https://img.shields.io/pypi/pyversions/stringpod.svg)](https://pypi.org/project/stringpod/)
+[![Build Status](https://github.com/jyyyeung/stringpod/actions/workflows/dev.yml/badge.svg)](https://github.com/jyyyeung/stringpod/actions/workflows/dev.yml)
+[![codecov](https://codecov.io/gh/jyyyeung/stringpod/branch/main/graphs/badge.svg)](https://codecov.io/github/jyyyeung/stringpod)
 
 Matching texts across languages
 
-* Documentation: <https://jyyyeung.github.io/text-match>
-* GitHub: <https://github.com/jyyyeung/text-match>
-* PyPI: <https://pypi.org/project/text-match/>
+* Documentation: <https://jyyyeung.github.io/stringpod>
+* GitHub: <https://github.com/jyyyeung/stringpod>
+* PyPI: <https://pypi.org/project/stringpod/>
 * Free software: MIT
 
 ## Features
@@ -22,17 +22,17 @@ Matching texts across languages
 ### Contains
 
 ```bash
-text-match contains "Hello, world!" "world"
-text-match contains "  Hello, world!  " "lo, wor" --options "strip_whitespace,ignore_case"
-text-match contains "歌曲（純音樂）" "(纯音乐)" --options "ignore_chinese_variant"
+stringpod contains "Hello, world!" "world"
+stringpod contains "  Hello, world!  " "lo, wor" --options "strip_whitespace,ignore_case"
+stringpod contains "歌曲（純音樂）" "(纯音乐)" --options "ignore_chinese_variant"
 ```
 
 ### Normalize
 
 ```bash
-text-match normalize "Hello, World!!!"
-text-match normalize "    Hello,   World!!!" --options "all"
-text-match normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
+stringpod normalize "Hello, World!!!"
+stringpod normalize "    Hello,   World!!!" --options "all"
+stringpod normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
 ```
 
 ## Normalizer Options

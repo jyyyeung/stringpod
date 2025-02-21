@@ -1,9 +1,9 @@
-"""Console script for text_match."""
+"""Console script for stringpod."""
 
 import click
 
-from text_match.normalizer import Normalizer, NormalizerOptions
-from text_match.text_match import contains_substring
+from stringpod.normalizer import Normalizer, NormalizerOptions
+from stringpod.stringpod import contains_substring
 
 
 @click.group(invoke_without_command=True)
@@ -11,8 +11,8 @@ from text_match.text_match import contains_substring
 def main(ctx):
     """Main entrypoint."""
     if ctx.invoked_subcommand is None:
-        click.echo("text-match")
-        click.echo("=" * len("text-match"))
+        click.echo("stringpod")
+        click.echo("=" * len("stringpod"))
         click.echo("Matching texts across languages")
 
 
@@ -23,7 +23,7 @@ def main(ctx):
 def contains(text: str, substring: str, options: str):
     """Check if the text contains the substring.
 
-    >>> text-match contains "Hello, world!" "world"
+    >>> stringpod contains "Hello, world!" "world"
     True
     """
     click.echo(f"Text: {text}")
@@ -39,11 +39,11 @@ def contains(text: str, substring: str, options: str):
 def normalize(text: str, options: str):
     """Normalize the text.
 
-    >>> text-match normalize "Hello, world!"
+    >>> stringpod normalize "Hello, world!"
     "Hello, world!"
-    >>> text-match normalize "Hello, world!" --options "ignore_case"
+    >>> stringpod normalize "Hello, world!" --options "ignore_case"
     "hello, world!"
-    >>> text-match normalize "Hello, world!"
+    >>> stringpod normalize "Hello, world!"
     """
     click.echo(f"Text: {text}")
     options_obj = NormalizerOptions.from_string(options)

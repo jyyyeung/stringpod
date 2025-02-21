@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-"""Tests for `text_match` package."""
+"""Tests for `stringpod` package."""
 
 import pytest
 from click.testing import CliRunner
 
-from text_match import cli
-from text_match.normalizer import NormalizerOptions
-from text_match.text_match import contains_substring
+from stringpod import cli
+from stringpod.normalizer import NormalizerOptions
+from stringpod.stringpod import contains_substring
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def test_command_line_interface():
     runner = CliRunner()
     result = runner.invoke(cli.main)
     assert result.exit_code == 0
-    assert "text-match" in result.output
+    assert "stringpod" in result.output
     help_result = runner.invoke(cli.main, ["--help"])
     assert help_result.exit_code == 0
     assert "--help  Show this message and exit." in help_result.output

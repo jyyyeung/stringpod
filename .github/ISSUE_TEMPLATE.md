@@ -1,4 +1,4 @@
-* Text Match version:
+* String Pod version:
 * Python version:
 * Operating System:
 

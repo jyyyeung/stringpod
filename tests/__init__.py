@@ -1,1 +1,1 @@
-"""Unit test package for text-match."""
+"""Unit test package for stringpod."""

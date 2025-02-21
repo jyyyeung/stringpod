@@ -1,4 +1,4 @@
-"""Top-level package for Text Match."""
+"""Top-level package for String Pod."""
 
 __author__ = """Jasmine Yeung"""
 __email__ = "yeungjyy@gmail.com"

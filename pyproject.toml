@@ -1,8 +1,8 @@
 [tool]
 [tool.poetry]
-name = "text-match"
+name = "stringpod"
 version = "0.1.0"
-homepage = "https://github.com/jyyyeung/text-match"
+homepage = "https://github.com/jyyyeung/stringpod"
 description = "Matching texts across languages."
 authors = ["Jasmine Yeung <yeungjyy@gmail.com>"]
 readme = "README.md"
@@ -15,7 +15,7 @@ classifiers = [
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.12',
 ]
-packages = [{ include = "text_match" }, { include = "tests", format = "sdist" }]
+packages = [{ include = "stringpod" }, { include = "tests", format = "sdist" }]
 
 [tool.poetry.dependencies]
 python = ">=3.12.3,<4.0"
@@ -75,7 +75,7 @@ doc = [
 ]
 
 [tool.poetry.scripts]
-text-match = 'text_match.cli:main'
+stringpod = 'stringpod.cli:main'
 
 [tool.black]
 line-length = 120

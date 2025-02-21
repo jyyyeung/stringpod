@@ -1,15 +1,15 @@
 # Usage
 
-To use Text Match in a project
+To use String Pod in a project
 
 ```python
-import text_match
+import stringpod
 ```
 
 ## Normalizer
 
 ```python
->>> from text_match import Normalizer, NormalizerOptions
+>>> from stringpod import Normalizer, NormalizerOptions
 >>> normalizer = Normalizer()
 >>> normalizer.normalize("Hello, world!")
 ```
@@ -43,7 +43,7 @@ import text_match
 ## String Contains Substring
 
 ```python
->>> from text_match import contains_substring
+>>> from stringpod import contains_substring
 >>> contains_substring("Hello, world!", "world")
 True
 >>> contains_substring("Hello, world!", "WORLD", options="ignore_case")
