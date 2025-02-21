@@ -44,8 +44,11 @@ jobs:
       - name: test with tox
         run: tox
 
-      - name: Set dev version
+      - name: Set dev version and build
         run: |
+          # Clean any existing builds
+          rm -rf dist/
+
           # Get current git hash
           HASH=$(git rev-parse --short HEAD)
           # Get current timestamp
@@ -54,11 +57,12 @@ jobs:
           poetry version $(poetry version --short).dev$TIMESTAMP+$HASH
           echo "VERSION=$(poetry version --short)" >> $GITHUB_ENV
 
-      - name: Build wheels and source tarball
-        run: poetry build
+          # Build with new version
+          poetry build
 
       - name: publish to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true # Skip if version already exists
