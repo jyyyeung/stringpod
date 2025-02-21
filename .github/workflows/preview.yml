@@ -14,7 +14,14 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   publish_dev_build:
+    name: Upload release to Test PyPI
     runs-on: ubuntu-latest
+    environment:
+      name: test-pypi
+      url: https://test.pypi.org/p/text-match
+
+    permissions:
+      id-token: write # IMPORTANT: mandatory for trusted publishing
 
     strategy:
       matrix:
@@ -41,9 +48,6 @@ jobs:
           poetry build
 
       - name: publish to Test PyPI
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.TEST_PYPI_API_TOKEN}}
-          repository_url: https://test.pypi.org/legacy/
-          skip_existing: true
+          repository-url: https://test.pypi.org/legacy/
