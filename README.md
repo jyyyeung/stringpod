@@ -14,7 +14,27 @@ Matching texts across languages
 
 ## Features
 
-* TODO
+* Normalize text with options
+* Check if a text contains a substring
+
+## Usage
+
+```bash
+text-match contains "Hello, world!" "world"
+text-match contains "  Hello, world!  " "lo, wor" --options "strip_whitespace,ignore_case"
+text-match contains "歌曲（純音樂）" "(纯音乐)" --options "ignore_chinese_variant"
+```
+
+## Normalizer Options
+
+* `strip_whitespace`: Strip whitespace (leading and trailing) from the text (default: `False`)
+* `remove_whitespace`: Remove whitespace (all whitespace characters) from the text (default: `False`)
+  * `strip_whitespace` will not be needed if `remove_whitespace` is `True`
+* `ignore_chinese_variant`: Ignore Chinese variant (default: `False`)
+* `ignore_case`: Ignore case (default: `False`)
+  * English will be converted to lowercase
+  * Chinese will be converted to simplified Chinese
+* `nfkc`: Normalize to NFKC (default: `True`)
 
 ## Credits
 
