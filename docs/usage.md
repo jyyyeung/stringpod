@@ -49,3 +49,15 @@ True
 >>> contains_substring("Hello, world!", "WORLD", options="ignore_case")
 True
 ```
+
+## Number Parser
+
+```python
+>>> from stringpod import number_parser
+>>> number_parser("One hundred and twenty-three")
+123
+>>> number_parser("One hundred and twenty-three", language="en")
+123
+>>> number_parser("一萬三", language="zh")
+130000
+```

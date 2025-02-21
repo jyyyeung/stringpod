@@ -35,7 +35,7 @@ stringpod normalize "    Hello,   World!!!" --options "all"
 stringpod normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
 ```
 
-## Normalizer Options
+### Normalizer Options
 
 * `strip_whitespace`: Strip whitespace (leading and trailing) from the text (default: `False`)
 * `remove_whitespace`: Remove whitespace (all whitespace characters) from the text (default: `False`)
@@ -45,6 +45,13 @@ stringpod normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
   * English will be converted to lowercase
   * Chinese will be converted to simplified Chinese
 * `nfkc`: Normalize to NFKC (default: `True`)
+
+### Number Parser
+
+```bash
+stringpod number "One hundred and twenty-three"
+stringpod number "One hundred and twenty-three" --language "en"
+```
 
 ## Development
 
