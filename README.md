@@ -46,6 +46,12 @@ stringpod normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
   * Chinese will be converted to simplified Chinese
 * `nfkc`: Normalize to NFKC (default: `True`)
 
+## Development
+
+```bash
+poetry install -E dev -E docs -E test
+```
+
 ## Credits
 
 This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [waynerv/cookiecutter-pypackage](https://github.com/waynerv/cookiecutter-pypackage) project template.
