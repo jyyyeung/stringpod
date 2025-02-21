@@ -49,12 +49,12 @@ jobs:
           # Clean any existing builds
           rm -rf dist/
 
-          # Get current git hash
-          HASH=$(git rev-parse --short HEAD)
-          # Get current timestamp
-          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          # Get current timestamp (using UTC)
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+
           # Update version with dev suffix (PEP 440 compliant)
-          poetry version $(poetry version --short).dev$TIMESTAMP+$HASH
+          # Format: 0.1.0.dev20240221120201
+          poetry version $(poetry version --short).dev$TIMESTAMP
           echo "VERSION=$(poetry version --short)" >> $GITHUB_ENV
 
           # Build with new version
