@@ -29,6 +29,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for proper versioning
+
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-versions }}
@@ -41,13 +44,21 @@ jobs:
       - name: test with tox
         run: tox
 
-      - name: Build wheels and source tarball
+      - name: Set dev version
         run: |
-          poetry version $(poetry version --short)-dev.$GITHUB_RUN_NUMBER
-          poetry version --short
-          poetry build
+          # Get current git hash
+          HASH=$(git rev-parse --short HEAD)
+          # Get current timestamp
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          # Update version with dev suffix
+          poetry version $(poetry version --short)-dev.$TIMESTAMP.$HASH
+          echo "VERSION=$(poetry version --short)" >> $GITHUB_ENV
+
+      - name: Build wheels and source tarball
+        run: poetry build
 
       - name: publish to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          skip-existing: true # Skip if version already exists
