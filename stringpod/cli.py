@@ -4,6 +4,7 @@ import click
 
 from stringpod.normalizer import Normalizer, NormalizerOptions
 from stringpod.number import to_number, to_number_with_language
+from stringpod.pinyin import match_pinyin
 from stringpod.stringpod import contains_substring
 
 
@@ -75,6 +76,35 @@ def number(text: str, language: str):
     else:
         result = to_number_with_language(text, language)
     click.echo(f"Result: {result}")
+
+
+@main.command()
+@click.argument("text1", type=str)
+@click.argument("text2", type=str)
+@click.option('-t', "--with-tone", is_flag=True, help="Whether to take tone into account", default=False)
+@click.option('-s', "--use-spoken-tone", is_flag=True, help="Whether to use the spoken tone", default=False)
+def cmp_pinyin(text1: str, text2: str, with_tone: bool, use_spoken_tone: bool):
+    """Compare the pinyin of two texts.
+
+    If --use-spoken-tone is set, --with-tone will be set to True.
+
+    >>> stringpod cmp-pinyin "你好" "你好"
+    True
+    >>> stringpod cmp-pinyin "你好" "你号"
+    True # Default: 忽略聲調
+    >>> stringpod cmp-pinyin "你好" "你号" -t
+    False # 考慮聲調，忽略變調
+    >>> stringpod cmp-pinyin "你好" "你号" -s
+    False # 考慮聲調，使用口語變調
+    """
+    if use_spoken_tone:
+        with_tone = True
+
+    click.echo(f"Text1: {text1}")
+    click.echo(f"Text2: {text2}")
+    click.echo(f"With tone: {with_tone}")
+    click.echo(f"Use spoken tone: {use_spoken_tone}")
+    click.echo(f"Result: {match_pinyin(text1, text2, with_tone, use_spoken_tone)}")
 
 
 if __name__ == "__main__":
