@@ -16,10 +16,14 @@ Matching texts across languages
 
 * Normalize text with options
 * Check if a text contains a substring
+* Parse numbers from text
+* Compare pinyin of two texts
 
 ## Usage
 
 ### Contains
+
+Check if a text contains a substring, with options.
 
 ```bash
 stringpod contains "Hello, world!" "world"
@@ -28,6 +32,8 @@ stringpod contains "歌曲（純音樂）" "(纯音乐)" --options "ignore_chine
 ```
 
 ### Normalize
+
+Normalize text to a standard form.
 
 ```bash
 stringpod normalize "Hello, World!!!"
@@ -48,17 +54,69 @@ stringpod normalize "歌曲（純音樂）" --options "ignore_chinese_variant"
 
 ### Number Parser
 
+Parse numbers from text.
+
 ```bash
 stringpod number "One hundred and twenty-three"
 stringpod number "One hundred and twenty-three" --language "en"
 ```
 
+### Number Parser Options
+
+* `language`: Language of the number (default: `en`)
+
+### Compare Pinyin
+
+Compare pinyin of two texts.
+
+```bash
+stringpod cmp-pinyin "你好" "你号"
+stringpod cmp-pinyin "你好" "你号" --options "with_tone"
+stringpod cmp-pinyin "你好" "你号" --options "spoken_tone"
+```
+
+### Pinyin Options
+
+* `with_tone`: Whether to include the tone (default: `False`)
+* `spoken_tone`: Whether to use the spoken tone (default: `False`)
+
 ## Development
 
 ```bash
 poetry install -E dev -E docs -E test
+poetry run pre-commit install
+```
+
+### CLI Application
+
+```bash
+poetry run python -m stringpod.cli --help
+```
+
+### Python API
+
+```bash
+poetry run python -m stringpod.stringpod --help
+```
+
+### Testing
+
+```bash
+poetry run pytest # Run Pytest
+poetry run python -m stringpod.stringpod -v # Run Doctests
 ```
 
 ## Credits
 
+Core packages:
+
+* [number-parser](https://github.com/scrapinghub/number-parser)
+* [pypinyin](https://github.com/mozillazg/python-pinyin)
+* [opencc](https://github.com/BYVoid/OpenCC)
+* [jieba](https://github.com/fxsjy/jieba)
+
 This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [waynerv/cookiecutter-pypackage](https://github.com/waynerv/cookiecutter-pypackage) project template.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

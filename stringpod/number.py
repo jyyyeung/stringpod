@@ -8,7 +8,7 @@ from stringpod.language import detect_language
 def to_number_with_language(text: str, language: str) -> str:
     """Convert a string to a number.
 
-    Reference: Uses [number-parser](https://github.com/fengsp/number-parser) to parse the number.
+    Reference: Uses [number-parser](https://github.com/scrapinghub/number-parser) to parse the number.
 
     >>> to_number_with_language("one two three", "en")
     "123"
