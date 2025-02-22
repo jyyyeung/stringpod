@@ -49,6 +49,8 @@ bump2version = { version = "^1.0.1", optional = true }
 word2number = "^1.1"
 number-parser = "^0.3.2"
 langdetect = "^1.0.9"
+pypinyin = "^0.53.0"
+jieba = "^0.42.1"
 
 [tool.poetry.scripts]
 stringpod = 'stringpod.cli:main'

@@ -2,6 +2,7 @@
 
 from langdetect import DetectorFactory, detect_langs
 from langdetect.language import Language
+from opencc import OpenCC
 
 DetectorFactory.seed = 0
 
@@ -82,3 +83,13 @@ _langdetect_codes = [
     "zh-cn",
     "zh-tw",
 ]
+
+
+def to_simplified_chinese(text: str) -> str:
+    """Convert a text to simplified Chinese.
+
+    >>> to_simplified_chinese("你好，世界！")
+    "你好，世界！"
+    """
+    opencc = OpenCC("t2s.json")
+    return opencc.convert(text)

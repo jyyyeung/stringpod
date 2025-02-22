@@ -61,3 +61,14 @@ True
 >>> number_parser("一萬三", language="zh")
 130000
 ```
+
+## Compare using Pinyin
+
+```bash
+>>> stringpod cmp-pinyin "你好" "你号"
+True # Default: 忽略聲調
+>>> stringpod cmp-pinyin "你好" "你号" -t
+False # 考慮聲調
+>>> stringpod cmp-pinyin "你好" "你号" -s
+False # 考慮聲調，使用口語變調
+```
