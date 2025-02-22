@@ -3,6 +3,10 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build distribution 📦
