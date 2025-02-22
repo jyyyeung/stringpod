@@ -14,6 +14,10 @@ def get_pinyin(text: str, **kwargs) -> list[str]:
 
     >>> get_pinyin("李浩")
     ['lǐ', 'hào']
+    >>> get_pinyin("我爱北京天安门", style=Style.TONE3)
+    ['wǒ', 'ài', 'běi', 'jīng', 'tiān', 'ān', 'mén']
+
+    Reference: https://github.com/mozillazg/python-pinyin
 
     Args:
         text (str): The text to get the pinyin of.
