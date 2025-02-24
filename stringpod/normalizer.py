@@ -5,6 +5,8 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
+import opencc
+
 logger = logging.getLogger(__name__)
 
 
@@ -158,14 +160,8 @@ class Normalizer:
 
     def _convert_to_simplified_chinese(self, text: str) -> str:
         """Convert the text to Simplified Chinese."""
-        try:
-            import opencc
-
-            opencc_converter = opencc.OpenCC("t2s")
-            return opencc_converter.convert(text)
-        except ImportError:
-            logger.warning("Please install stringpod[chinese] to use this feature.")
-            return text
+        opencc_converter = opencc.OpenCC("t2s")
+        return opencc_converter.convert(text)
 
     def _normalize_to_nfkc(self, text: str) -> str:
         """Normalize the text to NFKC.
