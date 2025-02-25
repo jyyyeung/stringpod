@@ -4,6 +4,8 @@ import re
 
 import hanzidentifier
 
+import stringpod.number
+import stringpod.sort
 from stringpod.normalizer import Normalizer, NormalizerOptions
 
 
@@ -166,3 +168,5 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
+    doctest.testmod(stringpod.sort)
+    doctest.testmod(stringpod.number)

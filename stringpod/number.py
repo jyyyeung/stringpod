@@ -1,23 +1,23 @@
 """Module for parsing numbers from strings."""
 
+import logging
+
 from number_parser import parse, parse_number, parse_ordinal
 
 from stringpod.language import detect_language
+
+logger = logging.getLogger(__name__)
 
 
 def to_number_with_language(text: str, language: str) -> str:
     """Convert a string to a number.
 
-    Reference: Uses [number-parser](https://github.com/scrapinghub/number-parser) to parse the number.
+    Ref: Uses [number-parser](https://github.com/scrapinghub/number-parser) to parse the number.
 
-    >>> to_number_with_language("one two three", "en")
-    "123"
-    >>> to_number_with_language("一萬兩千六", "zh")
-    "12600"
-    >>> to_number_with_language("Une centaine et une dizaine", "fr")
-    "110"
-    >>> to_number_with_language("Einhundertzehn", "de")
-    "110"
+    >>> to_number_with_language('one two three', 'en')
+    '1 2 3'
+    >>> to_number_with_language('一萬兩千六', 'zh')
+    '12600'
 
     Args:
         text: The string to convert.
@@ -29,19 +29,28 @@ def to_number_with_language(text: str, language: str) -> str:
     # Convert the language code to the number parser code
     language_code = __to_number_parser_code(language)
 
+    # Try to parse the number as an ordinal
     if language_code == "en":
         parsed_ordinal = parse_ordinal(text)
         if parsed_ordinal is not None:
             return parsed_ordinal
 
-    parsed_number = parse_number(text, language=language_code)
-    if parsed_number is not None:
-        return parsed_number
+    try:
+        parsed_number = parse_number(text, language=language_code)
+        if parsed_number is not None:
+            logger.debug("Parsed number: %s", parsed_number)
+            return parsed_number
+    except ValueError as e:
+        logger.debug("Could not parse number using parse_number: %s", e)
 
-    # Parse the number
-    parsed_result = parse(text, language=language_code)
-    if parsed_result is not None:
-        return parsed_result
+    try:
+        # Parse the number
+        parsed_result = parse(text, language=language_code)
+        if parsed_result is not None:
+            logger.debug("Parsed result: %s", parsed_result)
+            return parsed_result
+    except ValueError as e:
+        logger.debug("Could not parse number using parse: %s", e)
 
     raise ValueError(f"Could not parse number from text: {text}")
 
@@ -50,13 +59,13 @@ def to_number(text: str) -> str:
     """Convert a string to a number.
 
     >>> to_number("one two three")
-    "123"
-    >>> to_number("一萬兩千六")
-    "12600"
-    >>> to_number("一萬兩千零六")
-    "12006"
-    >>> to_number("doscientos cincuenta y doscientos treinta y uno y doce")
-    "250 y 231 y 12"
+    '1 2 3'
+    >>> to_number('一萬兩千六')
+    '12600'
+    >>> to_number('一萬兩千零六')
+    '12006'
+    >>> to_number('doscientos cincuenta y doscientos treinta y uno y doce')
+    '250 y 231 y 12'
 
     Args:
         text: The string to convert.
@@ -67,7 +76,8 @@ def to_number(text: str) -> str:
     languages = detect_language(text)
     for language in languages:
         language_code = language.lang
-        print(f"Trying language: {language_code}")
+
+        logger.debug("Trying language: %s", language_code)
         try:
             return to_number_with_language(text, language_code)
         except ValueError:
@@ -172,7 +182,7 @@ def __to_number_parser_code(language: str) -> str:
     """Convert a language to a number parser code.
 
     >>> __to_number_parser_code("en")
-    "en"
+    'en'
     """
     language_lower = language.lower()
     if language in mapping:

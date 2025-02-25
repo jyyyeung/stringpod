@@ -5,6 +5,8 @@
 [![Build Status](https://github.com/jyyyeung/stringpod/actions/workflows/dev.yml/badge.svg)](https://github.com/jyyyeung/stringpod/actions/workflows/dev.yml)
 [![codecov](https://codecov.io/gh/jyyyeung/stringpod/branch/main/graphs/badge.svg)](https://codecov.io/github/jyyyeung/stringpod)
 
+<img src ="./assets/bg.png" width="95%">
+
 Matching texts across languages
 
 * Documentation: <https://jyyyeung.github.io/stringpod>
